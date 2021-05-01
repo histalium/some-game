@@ -11,19 +11,26 @@ namespace SomeGame.Cli
         private readonly Stack<Card> _deck;
         private readonly List<Card> _discardPile = new();
         private readonly List<Card> _hand = new();
+        private readonly Stack<Card> _marketDeck;
+        private readonly List<Card> _market = new();
 
         public event EventHandler TurnEnded;
 
         public event EventHandler TurnStarted;
 
-        public Player(string name, List<Card> deck, bool isFirstPlayer)
+        public Player(string name, List<Card> deck, List<Card> marketDeck, bool isFirstPlayer)
         {
             Name = name;
+            _marketDeck = new Stack<Card>(marketDeck);
             _deck = new Stack<Card>(deck);
             var openingHandSize = isFirstPlayer ? 3 : 5;
-            for ( var i = 0; i < openingHandSize; i++)
+            for (var i = 0; i < openingHandSize; i++)
             {
                 _hand.Add(_deck.Pop());
+            }
+            for (var i = 0; i < 4; i++)
+            {
+                _market.Add(_marketDeck.Pop());
             }
         }
 
@@ -31,6 +38,9 @@ namespace SomeGame.Cli
 
         public IReadOnlyCollection<Card> Hand
             => _hand.AsReadOnly();
+
+        public IReadOnlyCollection<Card> Market
+            => _market.AsReadOnly();
 
         public void EndTurn()
         {

@@ -16,8 +16,15 @@ namespace SomeGame.Cli
                 .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
                 .ToList();
 
-            var player1 = new Player("player 1", player1Cards, true);
-            var player2 = new Player("player 2", player2Cards, false);
+            var player1MarketCards = Enumerable.Range(26, 30)
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .ToList();
+            var player2MarketCards = Enumerable.Range(56, 30)
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .ToList();
+
+            var player1 = new Player("player 1", player1Cards, player1MarketCards, true);
+            var player2 = new Player("player 2", player2Cards, player2MarketCards, false);
 
             player1.TurnStarted += PlayerTurnStarted;
             player2.TurnStarted += PlayerTurnStarted;
@@ -41,6 +48,10 @@ namespace SomeGame.Cli
                 {
                     PrintHand(_currentPlayer);
                 }
+                else if (line.Equals("show market", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    PrintMarket(_currentPlayer);
+                }
                 else
                 {
                     Console.WriteLine("invalid command");
@@ -57,6 +68,14 @@ namespace SomeGame.Cli
         private static void PrintHand(Player player)
         {
             foreach (var card in player.Hand)
+            {
+                Console.WriteLine($"{card.Id,4} {card.Name}");
+            }
+        }
+
+        private static void PrintMarket(Player player)
+        {
+            foreach (var card in player.Market)
             {
                 Console.WriteLine($"{card.Id,4} {card.Name}");
             }
