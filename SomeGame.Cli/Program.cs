@@ -37,7 +37,7 @@ namespace SomeGame.Cli
                 {
                     _currentPlayer.EndTurn();
                 }
-                if (line.Equals("show hand", StringComparison.InvariantCultureIgnoreCase))
+                else if (line.Equals("show hand", StringComparison.InvariantCultureIgnoreCase))
                 {
                     PrintHand(_currentPlayer);
                 }
