@@ -56,7 +56,7 @@ namespace SomeGame.Cli
 
         private static void PrintHand(Player player)
         {
-            foreach (var card in _currentPlayer.Hand)
+            foreach (var card in player.Hand)
             {
                 Console.WriteLine($"{card.Id,4} {card.Name}");
             }

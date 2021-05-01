@@ -9,8 +9,8 @@ namespace SomeGame.Cli
     public class Player
     {
         private readonly Stack<Card> _deck;
-        private readonly List<Card> _discardPile = new List<Card>();
-        private readonly List<Card> _hand = new List<Card>();
+        private readonly List<Card> _discardPile = new();
+        private readonly List<Card> _hand = new();
 
         public event EventHandler TurnEnded;
 
