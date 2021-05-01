@@ -9,7 +9,7 @@ namespace SomeGame.Cli
     public class Player
     {
         private readonly Stack<Card> _deck;
-
+        private readonly List<Card> _discardPile = new List<Card>();
         private readonly List<Card> _hand = new List<Card>();
 
         public event EventHandler TurnEnded;
@@ -34,7 +34,29 @@ namespace SomeGame.Cli
 
         public void EndTurn()
         {
+            _discardPile.AddRange(_hand);
+            _hand.Clear();
+            for (var i = 0; i < 5; i++)
+            {
+                if (_deck.Count == 0)
+                {
+                    RepopulateDeck();
+                }
+                _hand.Add(_deck.Pop());
+            }
             TurnEnded?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RepopulateDeck()
+        {
+            var random = new Random();
+            while (_discardPile.Count > 0)
+            {
+                var i = random.Next(_discardPile.Count);
+                var card = _discardPile[i];
+                _discardPile.Remove(card);
+                _deck.Push(card);
+            }
         }
 
         public void SetOtherPlayer(Player player)
