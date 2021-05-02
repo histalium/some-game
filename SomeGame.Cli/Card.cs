@@ -9,7 +9,9 @@ namespace SomeGame.Cli
     public record Card
     {
         public string Id { get; init; }
-        
+
         public string Name { get; init; }
+
+        public IReadOnlyCollection<Cost> Cost { get; init; }
     }
 }

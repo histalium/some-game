@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SomeGame.Cli
@@ -7,20 +8,26 @@ namespace SomeGame.Cli
     {
         private static Player _currentPlayer;
 
+        private static Resource _resourceA = new Resource { Id = "ra" };
+        private static Resource _resourceB = new Resource { Id = "rb" };
+        private static Resource _resourceC = new Resource { Id = "rc" };
+
         static void Main()
         {
+            var noResources = Enumerable.Empty<Cost>().ToList().AsReadOnly();
+
             var player1Cards = Enumerable.Range(0, 13)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = noResources })
                 .ToList();
             var player2Cards = Enumerable.Range(13, 13)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = noResources })
                 .ToList();
 
             var player1MarketCards = Enumerable.Range(26, 30)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t) })
                 .ToList();
             var player2MarketCards = Enumerable.Range(56, 30)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}" })
+                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t) })
                 .ToList();
 
             var player1 = new Player("player 1", player1Cards, player1MarketCards, true);
@@ -59,6 +66,30 @@ namespace SomeGame.Cli
             }
         }
 
+        private static IReadOnlyCollection<Cost> CalculateCost(int number)
+        {
+            if ( number % 3 == 0)
+            {
+                return new List<Cost> { new Cost { Amount = 1, Resource = _resourceA } };
+            }
+
+            if (number % 3 == 1)
+            {
+                return new List<Cost> { new Cost { Amount = 1, Resource = _resourceB } };
+            }
+
+            if (number % 3 == 3 && number % 5 == 0)
+            {
+                return new List<Cost> 
+                { 
+                    new Cost { Amount = 1, Resource = _resourceC },
+                    new Cost { Amount = 1, Resource = _resourceA }
+                };
+            }
+
+            return new List<Cost> { new Cost { Amount = 2, Resource = _resourceB } };
+        }
+
         private static void PlayerTurnStarted(object sender, EventArgs e)
         {
             _currentPlayer = sender as Player;
@@ -77,8 +108,13 @@ namespace SomeGame.Cli
         {
             foreach (var card in player.Market)
             {
-                Console.WriteLine($"{card.Id,4} {card.Name}");
+                Console.WriteLine($"{card.Id, -4} {card.Name, -10} {string.Join(", ", card.Cost.Select(CostText))}");
             }
+        }
+
+        private static string CostText(Cost cost)
+        {
+            return $"{cost.Amount} {cost.Resource.Id}";
         }
     }
 }
