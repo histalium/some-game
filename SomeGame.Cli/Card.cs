@@ -12,6 +12,6 @@ namespace SomeGame.Cli
 
         public string Name { get; init; }
 
-        public IReadOnlyCollection<Cost> Cost { get; init; }
+        public IReadOnlyCollection<ResourceAmount> Cost { get; init; }
     }
 }

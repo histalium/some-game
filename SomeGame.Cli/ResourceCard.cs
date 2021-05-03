@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SomeGame.Cli
 {
-    public record Cost
+    public record ResourceCard : Card
     {
-        public int Amount { get; init; }
-
-        public Resource Resource { get; init; }
+        public IReadOnlyCollection<ResourceAmount> Resources { get; init; }
     }
 }

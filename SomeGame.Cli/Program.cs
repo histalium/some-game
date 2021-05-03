@@ -14,20 +14,27 @@ namespace SomeGame.Cli
 
         static void Main()
         {
-            var noResources = Enumerable.Empty<Cost>().ToList().AsReadOnly();
+            var noResources = Enumerable.Empty<ResourceAmount>().ToList().AsReadOnly();
+
+            var resource1a = new ResourceAmount { Resource = _resourceA, Amount = 1 };
+            var onlyResource1a = new List<ResourceAmount> { resource1a };
 
             var player1Cards = Enumerable.Range(0, 13)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = noResources })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Resources = onlyResource1a })
+                .Cast<Card>()
                 .ToList();
             var player2Cards = Enumerable.Range(13, 13)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = noResources })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Resources = onlyResource1a })
+                .Cast<Card>()
                 .ToList();
 
             var player1MarketCards = Enumerable.Range(26, 30)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t) })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1a })
+                .Cast<Card>()
                 .ToList();
             var player2MarketCards = Enumerable.Range(56, 30)
-                .Select(t => new Card { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t) })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1a })
+                .Cast<Card>()
                 .ToList();
 
             var player1 = new Player("player 1", player1Cards, player1MarketCards, true);
@@ -66,28 +73,28 @@ namespace SomeGame.Cli
             }
         }
 
-        private static IReadOnlyCollection<Cost> CalculateCost(int number)
+        private static IReadOnlyCollection<ResourceAmount> CalculateCost(int number)
         {
             if ( number % 3 == 0)
             {
-                return new List<Cost> { new Cost { Amount = 1, Resource = _resourceA } };
+                return new List<ResourceAmount> { new ResourceAmount { Amount = 1, Resource = _resourceA } };
             }
 
             if (number % 3 == 1)
             {
-                return new List<Cost> { new Cost { Amount = 1, Resource = _resourceB } };
+                return new List<ResourceAmount> { new ResourceAmount { Amount = 1, Resource = _resourceB } };
             }
 
             if (number % 3 == 3 && number % 5 == 0)
             {
-                return new List<Cost> 
+                return new List<ResourceAmount> 
                 { 
-                    new Cost { Amount = 1, Resource = _resourceC },
-                    new Cost { Amount = 1, Resource = _resourceA }
+                    new ResourceAmount { Amount = 1, Resource = _resourceC },
+                    new ResourceAmount { Amount = 1, Resource = _resourceA }
                 };
             }
 
-            return new List<Cost> { new Cost { Amount = 2, Resource = _resourceB } };
+            return new List<ResourceAmount> { new ResourceAmount { Amount = 2, Resource = _resourceB } };
         }
 
         private static void PlayerTurnStarted(object sender, EventArgs e)
@@ -100,7 +107,14 @@ namespace SomeGame.Cli
         {
             foreach (var card in player.Hand)
             {
-                Console.WriteLine($"{card.Id,4} {card.Name}");
+                if (card is ResourceCard resourceCard)
+                {
+                    Console.WriteLine($"{card.Id,4} {card.Name} ({string.Join(", ", resourceCard.Resources.Select(CostText))})");
+                }
+                else
+                {
+                    Console.WriteLine($"{card.Id,4} {card.Name}");
+                }
             }
         }
 
@@ -108,11 +122,18 @@ namespace SomeGame.Cli
         {
             foreach (var card in player.Market)
             {
-                Console.WriteLine($"{card.Id, -4} {card.Name, -10} {string.Join(", ", card.Cost.Select(CostText))}");
+                if (card is ResourceCard resourceCard)
+                {
+                    Console.WriteLine($"{card.Id, -4} {card.Name, -10} ({string.Join(", ", resourceCard.Resources.Select(CostText))}) cost: {string.Join(", ", card.Cost.Select(CostText))}");
+                }
+                else
+                {
+                    Console.WriteLine($"{card.Id,-4} {card.Name,-10} cost: {string.Join(", ", card.Cost.Select(CostText))}");
+                }
             }
         }
 
-        private static string CostText(Cost cost)
+        private static string CostText(ResourceAmount cost)
         {
             return $"{cost.Amount} {cost.Resource.Id}";
         }
