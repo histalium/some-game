@@ -28,6 +28,7 @@ namespace SomeGame.Cli
             {
                 _hand.Add(_deck.Pop());
             }
+            UpdateHandResources();
             for (var i = 0; i < 4; i++)
             {
                 _market.Add(_marketDeck.Pop());
@@ -38,6 +39,8 @@ namespace SomeGame.Cli
 
         public IReadOnlyCollection<Card> Hand
             => _hand.AsReadOnly();
+
+        public IReadOnlyCollection<ResourceAmount> HandResources { get; private set; }
 
         public IReadOnlyCollection<Card> Market
             => _market.AsReadOnly();
@@ -54,6 +57,7 @@ namespace SomeGame.Cli
                 }
                 _hand.Add(_deck.Pop());
             }
+            UpdateHandResources();
             TurnEnded?.Invoke(this, EventArgs.Empty);
         }
 
@@ -67,6 +71,20 @@ namespace SomeGame.Cli
                 _discardPile.Remove(card);
                 _deck.Push(card);
             }
+        }
+
+        private void UpdateHandResources()
+        {
+            HandResources = _hand
+               .OfType<ResourceCard>()
+               .SelectMany(t => t.Resources)
+               .GroupBy(t => t.Resource)
+               .Select(t => new ResourceAmount
+               {
+                   Resource = t.Key,
+                   Amount = t.Sum(u => u.Amount)
+               })
+               .ToList();
         }
 
         public void SetOtherPlayer(Player player)

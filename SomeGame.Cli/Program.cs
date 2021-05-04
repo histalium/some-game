@@ -105,6 +105,11 @@ namespace SomeGame.Cli
 
         private static void PrintHand(Player player)
         {
+            foreach(var resource in player.HandResources)
+            {
+                Console.WriteLine($"{resource.Resource.Id}: {resource.Amount}");
+            }
+
             foreach (var card in player.Hand)
             {
                 if (card is ResourceCard resourceCard)
