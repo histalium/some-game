@@ -8,9 +8,9 @@ namespace SomeGame.Cli
     {
         private static Player _currentPlayer;
 
-        private static Resource _resourceA = new Resource { Id = "ra" };
-        private static Resource _resourceB = new Resource { Id = "rb" };
-        private static Resource _resourceC = new Resource { Id = "rc" };
+        private static readonly Resource _resourceA = new() { Id = "ra" };
+        private static readonly Resource _resourceB = new() { Id = "rb" };
+        private static readonly Resource _resourceC = new() { Id = "rc" };
 
         static void Main()
         {
