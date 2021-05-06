@@ -22,7 +22,7 @@ namespace SomeGame.Cli
             var onlyResource1b = new List<ResourceAmount> { resource1b };
 
             var player1Cards = Enumerable.Range(0, 13)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Resources = onlyResource1a })
+                .Select(t => new MinionCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Health = 1, Attack = 1 })
                 .Cast<Card>()
                 .ToList();
             var player2Cards = Enumerable.Range(13, 13)
@@ -122,6 +122,10 @@ namespace SomeGame.Cli
                 if (card is ResourceCard resourceCard)
                 {
                     Console.WriteLine($"{card.Id,4} {card.Name} ({string.Join(", ", resourceCard.Resources.Select(CostText))})");
+                }
+                else if (card is MinionCard minionCard)
+                {
+                    Console.WriteLine($"{card.Id,4} {card.Name} (hp: {minionCard.Health}, atk: {minionCard.Attack})");
                 }
                 else
                 {
