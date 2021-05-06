@@ -22,6 +22,7 @@ namespace SomeGame.Cli
         public Player(string name, List<Card> deck, List<Card> marketDeck, bool isFirstPlayer)
         {
             Name = name;
+            Health = 50;
             _marketDeck = new Stack<Card>(marketDeck);
             _deck = new Stack<Card>(deck);
             var openingHandSize = isFirstPlayer ? 3 : 5;
@@ -37,6 +38,8 @@ namespace SomeGame.Cli
         }
 
         public string Name { get; }
+
+        public int Health { get; private set; }
 
         public IReadOnlyCollection<Card> Hand
             => _hand.AsReadOnly();
