@@ -93,6 +93,11 @@ namespace SomeGame.Cli
                 {
                     Console.WriteLine($"{_currentPlayer.Name} (hp: {_currentPlayer.Health})");
                 }
+                else if (line.Equals("show hero rival", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var rival = _currentPlayer == player1 ? player2 : player1;
+                    Console.WriteLine($"{rival.Name} (hp: {rival.Health})");
+                }
                 else
                 {
                     Console.WriteLine("invalid command");
