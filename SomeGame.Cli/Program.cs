@@ -84,7 +84,7 @@ namespace SomeGame.Cli
                 {
                     PrintField(_currentPlayer);
                 }
-                else if (line.Equals("show field rival"))
+                else if (line.Equals("show field rival", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var rival = _currentPlayer == player1 ? player2 : player1;
                     PrintField(rival);
