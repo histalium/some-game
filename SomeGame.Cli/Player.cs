@@ -13,6 +13,7 @@ namespace SomeGame.Cli
         private readonly List<Card> _hand = new();
         private readonly Stack<Card> _marketDeck;
         private readonly List<Card> _market = new();
+        private readonly List<Minion> _field = new();
 
         public event EventHandler TurnEnded;
 
@@ -44,6 +45,9 @@ namespace SomeGame.Cli
 
         public IReadOnlyCollection<Card> Market
             => _market.AsReadOnly();
+
+        public IReadOnlyCollection<Minion> Field
+            => _field.AsReadOnly();
 
         public void EndTurn()
         {
@@ -121,7 +125,7 @@ namespace SomeGame.Cli
 
         private bool HasResources(IReadOnlyCollection<ResourceAmount> resources)
         {
-            foreach(var resource in resources)
+            foreach (var resource in resources)
             {
                 var inHand = HandResources
                     .Where(t => t.Resource == resource.Resource)
@@ -150,7 +154,7 @@ namespace SomeGame.Cli
                         .Where(u => u.Resource == t.Resource)
                         .FirstOrDefault();
 
-                    if(resource is null)
+                    if (resource is null)
                     {
                         return t;
                     }
@@ -164,6 +168,26 @@ namespace SomeGame.Cli
                 .ToList();
 
             return true;
+        }
+
+        public void AddMinionToField(string cardId)
+        {
+            var card = Hand
+                .Where(t => t.Id.Equals(cardId))
+                .FirstOrDefault();
+
+            if (card is null)
+            {
+                throw new CardNotFoundException();
+            }
+
+            if (card is not MinionCard minionCard)
+            {
+                throw new InvalidCardTypeException();
+            }
+
+            _hand.Remove(card);
+            _field.Add(new Minion(minionCard));
         }
     }
 }

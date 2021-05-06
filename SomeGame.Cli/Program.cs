@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SomeGame.Cli
 {
@@ -56,6 +57,8 @@ namespace SomeGame.Cli
             {
                 var line = Console.ReadLine();
 
+                var addToField = Regex.Match(line, @"^add (?<card>c\d+) to field$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
                 if (line.Equals("end turn", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _currentPlayer.EndTurn();
@@ -72,6 +75,14 @@ namespace SomeGame.Cli
                 {
                     var cardId = line[4..];
                     BuyCard(_currentPlayer, cardId);
+                }
+                else if (addToField.Success)
+                {
+                    AddCardToField(_currentPlayer, addToField.Groups["card"].Value);
+                }
+                else if (line.Equals("show field", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    PrintField(_currentPlayer);
                 }
                 else
                 {
@@ -168,7 +179,30 @@ namespace SomeGame.Cli
             {
                 Console.WriteLine("You don't have enough resources to buy this card");
             }
+        }
 
+        private static void AddCardToField(Player player, string cardId)
+        {
+            try
+            {
+                player.AddMinionToField(cardId);
+            }
+            catch (CardNotFoundException)
+            {
+                Console.WriteLine("Card not found in your hand");
+            }
+            catch (InvalidCardTypeException)
+            {
+                Console.WriteLine("Card type can't be added to field");
+            }
+        }
+
+        private static void PrintField(Player player)
+        {
+            foreach(var minion in player.Field)
+            {
+                Console.WriteLine($"{minion.Card.Id,-4} hp: {minion.Health}, atk: {minion.Attack}");
+            }
         }
     }
 }
