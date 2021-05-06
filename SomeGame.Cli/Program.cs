@@ -84,6 +84,11 @@ namespace SomeGame.Cli
                 {
                     PrintField(_currentPlayer);
                 }
+                else if (line.Equals("show field rival"))
+                {
+                    var rival = _currentPlayer == player1 ? player2 : player1;
+                    PrintField(rival);
+                }
                 else
                 {
                     Console.WriteLine("invalid command");
