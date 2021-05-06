@@ -18,6 +18,8 @@ namespace SomeGame.Cli
 
             var resource1a = new ResourceAmount { Resource = _resourceA, Amount = 1 };
             var onlyResource1a = new List<ResourceAmount> { resource1a };
+            var resource1b = new ResourceAmount { Resource = _resourceB, Amount = 1 };
+            var onlyResource1b = new List<ResourceAmount> { resource1b };
 
             var player1Cards = Enumerable.Range(0, 13)
                 .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Resources = onlyResource1a })
@@ -29,11 +31,11 @@ namespace SomeGame.Cli
                 .ToList();
 
             var player1MarketCards = Enumerable.Range(26, 30)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1a })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
                 .Cast<Card>()
                 .ToList();
             var player2MarketCards = Enumerable.Range(56, 30)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1a })
+                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
                 .Cast<Card>()
                 .ToList();
 
@@ -66,6 +68,11 @@ namespace SomeGame.Cli
                 {
                     PrintMarket(_currentPlayer);
                 }
+                else if (line.StartsWith("buy ", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var cardId = line[4..];
+                    BuyCard(_currentPlayer, cardId);
+                }
                 else
                 {
                     Console.WriteLine("invalid command");
@@ -75,7 +82,7 @@ namespace SomeGame.Cli
 
         private static IReadOnlyCollection<ResourceAmount> CalculateCost(int number)
         {
-            if ( number % 3 == 0)
+            if (number % 3 == 0)
             {
                 return new List<ResourceAmount> { new ResourceAmount { Amount = 1, Resource = _resourceA } };
             }
@@ -87,8 +94,8 @@ namespace SomeGame.Cli
 
             if (number % 3 == 3 && number % 5 == 0)
             {
-                return new List<ResourceAmount> 
-                { 
+                return new List<ResourceAmount>
+                {
                     new ResourceAmount { Amount = 1, Resource = _resourceC },
                     new ResourceAmount { Amount = 1, Resource = _resourceA }
                 };
@@ -105,7 +112,7 @@ namespace SomeGame.Cli
 
         private static void PrintHand(Player player)
         {
-            foreach(var resource in player.HandResources)
+            foreach (var resource in player.HandResources)
             {
                 Console.WriteLine($"{resource.Resource.Id}: {resource.Amount}");
             }
@@ -129,7 +136,7 @@ namespace SomeGame.Cli
             {
                 if (card is ResourceCard resourceCard)
                 {
-                    Console.WriteLine($"{card.Id, -4} {card.Name, -10} ({string.Join(", ", resourceCard.Resources.Select(CostText))}) cost: {string.Join(", ", card.Cost.Select(CostText))}");
+                    Console.WriteLine($"{card.Id,-4} {card.Name,-10} ({string.Join(", ", resourceCard.Resources.Select(CostText))}) cost: {string.Join(", ", card.Cost.Select(CostText))}");
                 }
                 else
                 {
@@ -141,6 +148,23 @@ namespace SomeGame.Cli
         private static string CostText(ResourceAmount cost)
         {
             return $"{cost.Amount} {cost.Resource.Id}";
+        }
+
+        private static void BuyCard(Player player, string cardId)
+        {
+            try
+            {
+                player.BuyCard(cardId);
+            }
+            catch (CardNotFoundException)
+            {
+                Console.WriteLine("Card not found in the market");
+            }
+            catch (NotEnoughResourcesException)
+            {
+                Console.WriteLine("You don't have enough resources to buy this card");
+            }
+
         }
     }
 }

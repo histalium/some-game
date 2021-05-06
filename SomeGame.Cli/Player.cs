@@ -96,5 +96,74 @@ namespace SomeGame.Cli
         {
             TurnStarted?.Invoke(this, EventArgs.Empty);
         }
+
+        public void BuyCard(string cardId)
+        {
+            var card = Market
+                .Where(t => t.Id.Equals(cardId))
+                .FirstOrDefault();
+
+            if (card is null)
+            {
+                throw new CardNotFoundException();
+            }
+
+            if (!HasResources(card.Cost))
+            {
+                throw new NotEnoughResourcesException();
+            }
+
+            _market.Remove(card);
+            _discardPile.Add(card);
+            RemoveResources(card.Cost);
+            _market.Add(_marketDeck.Pop());
+        }
+
+        private bool HasResources(IReadOnlyCollection<ResourceAmount> resources)
+        {
+            foreach(var resource in resources)
+            {
+                var inHand = HandResources
+                    .Where(t => t.Resource == resource.Resource)
+                    .FirstOrDefault();
+
+                if (inHand is null)
+                {
+                    return false;
+                }
+
+                if (inHand.Amount < resource.Amount)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool RemoveResources(IReadOnlyCollection<ResourceAmount> resources)
+        {
+            HandResources = HandResources
+                .Select(t =>
+                {
+                    var resource = resources
+                        .Where(u => u.Resource == t.Resource)
+                        .FirstOrDefault();
+
+                    if(resource is null)
+                    {
+                        return t;
+                    }
+
+                    return new ResourceAmount
+                    {
+                        Resource = t.Resource,
+                        Amount = t.Amount - resource.Amount
+                    };
+                })
+                .ToList();
+
+            return true;
+        }
     }
 }
