@@ -46,8 +46,8 @@ namespace SomeGame.Cli
             player1.TurnStarted += PlayerTurnStarted;
             player2.TurnStarted += PlayerTurnStarted;
 
-            player1.SetOtherPlayer(player2);
-            player2.SetOtherPlayer(player1);
+            player1.SetRival(player2);
+            player2.SetRival(player1);
 
             _currentPlayer = player1;
 
@@ -58,6 +58,7 @@ namespace SomeGame.Cli
                 var line = Console.ReadLine();
 
                 var addToField = Regex.Match(line, @"^add (?<card>c\d+) to field$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var attackHero = Regex.Match(line, @"^attack hero with (?<card>c\d+)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (line.Equals("end turn", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -97,6 +98,10 @@ namespace SomeGame.Cli
                 {
                     var rival = _currentPlayer == player1 ? player2 : player1;
                     Console.WriteLine($"{rival.Name} (hp: {rival.Health})");
+                }
+                else if (attackHero.Success)
+                {
+                    AttackHero(_currentPlayer, attackHero.Groups["card"].Value);
                 }
                 else
                 {
@@ -213,9 +218,21 @@ namespace SomeGame.Cli
 
         private static void PrintField(Player player)
         {
-            foreach(var minion in player.Field)
+            foreach (var minion in player.Field)
             {
                 Console.WriteLine($"{minion.Card.Id,-4} hp: {minion.Health}, atk: {minion.Attack}");
+            }
+        }
+
+        private static void AttackHero(Player player, string cardId)
+        {
+            try
+            {
+                player.AttackHero(cardId);
+            }
+            catch (MinionNotFoundException)
+            {
+                Console.WriteLine("Minion not found on the field");
             }
         }
     }

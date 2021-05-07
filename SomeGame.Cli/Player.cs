@@ -14,6 +14,7 @@ namespace SomeGame.Cli
         private readonly Stack<Card> _marketDeck;
         private readonly List<Card> _market = new();
         private readonly List<Minion> _field = new();
+        private Player _rival;
 
         public event EventHandler TurnEnded;
 
@@ -94,8 +95,9 @@ namespace SomeGame.Cli
                .ToList();
         }
 
-        public void SetOtherPlayer(Player player)
+        public void SetRival(Player player)
         {
+            _rival = player;
             player.TurnEnded += OtherPlayerTurnEnded;
         }
 
@@ -191,6 +193,20 @@ namespace SomeGame.Cli
 
             _hand.Remove(card);
             _field.Add(new Minion(minionCard));
+        }
+
+        public void AttackHero(string cardId)
+        {
+            var minion = Field
+                .Where(t => t.Card.Id.Equals(cardId))
+                .FirstOrDefault();
+
+            if (minion is null)
+            {
+                throw new MinionNotFoundException();
+            }
+
+            _rival.Health -= minion.Attack;
         }
     }
 }
