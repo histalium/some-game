@@ -9,10 +9,12 @@ namespace SomeGame.Cli
     public class MinionNotFoundException
         : Exception
     {
-        public MinionNotFoundException()
+        public MinionNotFoundException(string cardId)
             : base("Minion is not found")
         {
-
+            CardId = cardId;
         }
+
+        public string CardId { get; }
     }
 }

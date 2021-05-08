@@ -27,7 +27,7 @@ namespace SomeGame.Cli
                 .Cast<Card>()
                 .ToList();
             var player2Cards = Enumerable.Range(13, 13)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Resources = onlyResource1a })
+                .Select(t => new MinionCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Health = 1, Attack = 1 })
                 .Cast<Card>()
                 .ToList();
 
@@ -59,6 +59,7 @@ namespace SomeGame.Cli
 
                 var addToField = Regex.Match(line, @"^add (?<card>c\d+) to field$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 var attackHero = Regex.Match(line, @"^attack hero with (?<card>c\d+)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var attackMinion = Regex.Match(line, @"^attack (?<minionRival>c\d+) with (?<minion>c\d+)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (line.Equals("end turn", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -102,6 +103,12 @@ namespace SomeGame.Cli
                 else if (attackHero.Success)
                 {
                     AttackHero(_currentPlayer, attackHero.Groups["card"].Value);
+                }
+                else if (attackMinion.Success)
+                {
+                    var minionRival = attackMinion.Groups["minionRival"].Value;
+                    var minion = attackMinion.Groups["minion"].Value;
+                    AttackMinion(_currentPlayer, minion, minionRival);
                 }
                 else
                 {
@@ -233,6 +240,25 @@ namespace SomeGame.Cli
             catch (MinionNotFoundException)
             {
                 Console.WriteLine("Minion not found on the field");
+            }
+        }
+
+        private static void AttackMinion(Player player, string minion, string minionRival)
+        {
+            try
+            {
+                player.AttackMinion(minion, minionRival);
+            }
+            catch (MinionNotFoundException ex)
+            {
+                if (ex.CardId.Equals(minion))
+                {
+                    Console.WriteLine("Minion not found on your field");
+                }
+                else
+                {
+                    Console.WriteLine("Minion not found on your rivals field");
+                }
             }
         }
     }

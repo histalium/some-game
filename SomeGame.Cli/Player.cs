@@ -203,10 +203,42 @@ namespace SomeGame.Cli
 
             if (minion is null)
             {
-                throw new MinionNotFoundException();
+                throw new MinionNotFoundException(cardId);
             }
 
             _rival.Health -= minion.Attack;
+        }
+
+        public void AttackMinion(string minionId, string minionRivalId)
+        {
+            var minion = Field
+                .Where(t => t.Card.Id.Equals(minionId))
+                .FirstOrDefault();
+
+            if (minion is null)
+            {
+                throw new MinionNotFoundException(minionId);
+            }
+
+            var minionRival = _rival.Field
+                .Where(t => t.Card.Id.Equals(minionRivalId))
+                .FirstOrDefault();
+
+            if (minionRival is null)
+            {
+                throw new MinionNotFoundException(minionRivalId);
+            }
+
+            if (minionRival.Health <= minion.Attack)
+            {
+                minionRival.Health = 0;
+                _rival._field.Remove(minionRival);
+                _rival._discardPile.Add(minionRival.Card);
+            }
+            else
+            {
+                minionRival.Health -= minion.Attack;
+            }
         }
     }
 }
