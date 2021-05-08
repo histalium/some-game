@@ -12,24 +12,19 @@ namespace SomeGame.Cli
         private static readonly Resource _resourceA = new() { Id = "ra" };
         private static readonly Resource _resourceB = new() { Id = "rb" };
         private static readonly Resource _resourceC = new() { Id = "rc" };
+        private static IReadOnlyCollection<ResourceAmount> _noResources;
 
         static void Main()
         {
-            var noResources = Enumerable.Empty<ResourceAmount>().ToList().AsReadOnly();
+            _noResources = Enumerable.Empty<ResourceAmount>().ToList().AsReadOnly();
 
             var resource1a = new ResourceAmount { Resource = _resourceA, Amount = 1 };
             var onlyResource1a = new List<ResourceAmount> { resource1a };
             var resource1b = new ResourceAmount { Resource = _resourceB, Amount = 1 };
             var onlyResource1b = new List<ResourceAmount> { resource1b };
 
-            var player1Cards = Enumerable.Range(0, 13)
-                .Select(t => new MinionCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Health = 1, Attack = 1 })
-                .Cast<Card>()
-                .ToList();
-            var player2Cards = Enumerable.Range(13, 13)
-                .Select(t => new MinionCard { Id = $"c{t}", Name = $"card {t}", Cost = noResources, Health = 1, Attack = 1 })
-                .Cast<Card>()
-                .ToList();
+            var player1Cards = CreateStartDeck(0);
+            var player2Cards = CreateStartDeck(7);
 
             var player1MarketCards = Enumerable.Range(26, 30)
                 .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
@@ -115,6 +110,39 @@ namespace SomeGame.Cli
                     Console.WriteLine("invalid command");
                 }
             }
+        }
+
+        private static List<Card> CreateStartDeck(int startId)
+        {
+            var startDeck = Enumerable.Range(startId, 7)
+                .Select(t => t < startId + 2 ? CreateKikaboo($"c{t}") : CreateOneOfA($"c{t}"))
+                .Cast<Card>()
+                .ToList();
+
+            return startDeck;
+        }
+
+        private static Card CreateKikaboo(string cardId)
+        {
+            return new MinionCard
+            {
+                Id = cardId,
+                Name = "Kikaboo",
+                Cost = _noResources,
+                Health = 1,
+                Attack = 1
+            };
+        }
+
+        private static Card CreateOneOfA(string cardId)
+        {
+            return new ResourceCard
+            {
+                Id = cardId,
+                Name = "One of A",
+                Cost = _noResources,
+                Resources = new List<ResourceAmount> { new ResourceAmount { Resource = _resourceA, Amount = 1 } }
+            };
         }
 
         private static IReadOnlyCollection<ResourceAmount> CalculateCost(int number)
