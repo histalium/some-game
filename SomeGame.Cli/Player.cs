@@ -8,7 +8,7 @@ namespace SomeGame.Cli
 {
     public class Player
     {
-        private readonly Stack<Card> _deck;
+        private readonly Stack<Card> _deck = new();
         private readonly List<Card> _discardPile = new();
         private readonly List<Card> _hand = new();
         private readonly Stack<Card> _marketDeck;
@@ -25,7 +25,8 @@ namespace SomeGame.Cli
             Name = name;
             Health = 50;
             _marketDeck = new Stack<Card>(marketDeck);
-            _deck = new Stack<Card>(deck);
+            _discardPile.AddRange(deck);
+            RepopulateDeck();
             var openingHandSize = isFirstPlayer ? 3 : 5;
             for (var i = 0; i < openingHandSize; i++)
             {
