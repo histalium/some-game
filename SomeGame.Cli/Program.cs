@@ -255,7 +255,8 @@ namespace SomeGame.Cli
         {
             foreach (var minion in player.Field)
             {
-                Console.WriteLine($"{minion.Card.Id,-4} hp: {minion.Health}, atk: {minion.Attack}");
+                var activeText = minion.Active ? "active" : "not active";
+                Console.WriteLine($"{minion.Card.Id,-4} hp: {minion.Health}, atk: {minion.Attack} ({activeText})");
             }
         }
 
@@ -268,6 +269,10 @@ namespace SomeGame.Cli
             catch (MinionNotFoundException)
             {
                 Console.WriteLine("Minion not found on the field");
+            }
+            catch (MinionNotActiveException)
+            {
+                Console.WriteLine("Minion is not active");
             }
         }
 
@@ -287,6 +292,10 @@ namespace SomeGame.Cli
                 {
                     Console.WriteLine("Minion not found on your rivals field");
                 }
+            }
+            catch (MinionNotActiveException)
+            {
+                Console.WriteLine("Minion is not active");
             }
         }
     }

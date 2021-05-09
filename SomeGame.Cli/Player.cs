@@ -67,6 +67,10 @@ namespace SomeGame.Cli
                 _hand.Add(_deck.Pop());
             }
             UpdateHandResources();
+            foreach (var minion in _field)
+            {
+                minion.Active = true;
+            }
             TurnEnded?.Invoke(this, EventArgs.Empty);
         }
 
@@ -207,7 +211,13 @@ namespace SomeGame.Cli
                 throw new MinionNotFoundException(cardId);
             }
 
+            if (!minion.Active)
+            {
+                throw new MinionNotActiveException();
+            }
+
             _rival.Health -= minion.Attack;
+            minion.Active = false;
         }
 
         public void AttackMinion(string minionId, string minionRivalId)
@@ -219,6 +229,11 @@ namespace SomeGame.Cli
             if (minion is null)
             {
                 throw new MinionNotFoundException(minionId);
+            }
+
+            if (!minion.Active)
+            {
+                throw new MinionNotActiveException();
             }
 
             var minionRival = _rival.Field
@@ -240,6 +255,7 @@ namespace SomeGame.Cli
             {
                 minionRival.Health -= minion.Attack;
             }
+            minion.Active = false;
         }
     }
 }

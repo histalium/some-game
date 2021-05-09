@@ -13,6 +13,7 @@ namespace SomeGame.Cli
             Card = card;
             Health = card.Health;
             Attack = card.Attack;
+            Active = false;
         }
 
         public MinionCard Card { get; }
@@ -20,5 +21,7 @@ namespace SomeGame.Cli
         public int Health { get; internal set; }
 
         public int Attack { get; internal set; }
+
+        public bool Active { get; internal set; }
     }
 }
