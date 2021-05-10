@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.Logic
 {
-    public class InvalidCardTypeException
+    public class NotEnoughResourcesException
         : Exception
     {
-        public InvalidCardTypeException()
-            : base ("Invalid type of card")
+        public NotEnoughResourcesException()
+            : base ("Not enough resources")
         {
-
+                
         }
     }
 }

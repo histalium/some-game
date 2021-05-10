@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.Logic
 {
-    public class NotEnoughResourcesException
+    public class CardNotFoundException
         : Exception
     {
-        public NotEnoughResourcesException()
-            : base ("Not enough resources")
+        public CardNotFoundException()
+            : base("Card not found")
         {
-                
+
         }
     }
 }

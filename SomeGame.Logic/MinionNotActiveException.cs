@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.Logic
 {
-    public class CardNotFoundException
+    public class MinionNotActiveException
         : Exception
     {
-        public CardNotFoundException()
-            : base("Card not found")
+        public MinionNotActiveException()
+            : base("Minion is not active")
         {
 
         }

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.Logic
 {
-    public class MinionNotActiveException
+    public class InvalidCardTypeException
         : Exception
     {
-        public MinionNotActiveException()
-            : base("Minion is not active")
+        public InvalidCardTypeException()
+            : base ("Invalid type of card")
         {
 
         }
