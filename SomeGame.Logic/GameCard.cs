@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SomeGame.Logic
 {
-    public record Card
+    public record GameCard
     {
-        public string Name { get; init; }
+        public string Id { get; init; }
 
-        public IReadOnlyCollection<ResourceAmount> Cost { get; init; }
+        public Card Card { get; init; }
     }
 }

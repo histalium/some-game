@@ -8,13 +8,16 @@ namespace SomeGame.Logic
 {
     public class Minion
     {
-        public Minion(MinionCard card)
+        public Minion(MinionCard card, string cardId)
         {
             Card = card;
+            CardId = cardId;
             Health = card.Health;
             Attack = card.Attack;
             Active = false;
         }
+
+        public string CardId { get; }
 
         public MinionCard Card { get; }
 

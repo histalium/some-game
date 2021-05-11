@@ -8,11 +8,11 @@ namespace SomeGame.Logic
 {
     public class Player
     {
-        private readonly Stack<Card> _deck = new();
-        private readonly List<Card> _discardPile = new();
-        private readonly List<Card> _hand = new();
-        private readonly Stack<Card> _marketDeck;
-        private readonly List<Card> _market = new();
+        private readonly Stack<GameCard> _deck = new();
+        private readonly List<GameCard> _discardPile = new();
+        private readonly List<GameCard> _hand = new();
+        private readonly Stack<GameCard> _marketDeck;
+        private readonly List<GameCard> _market = new();
         private readonly List<Minion> _field = new();
         private Player _rival;
 
@@ -20,11 +20,11 @@ namespace SomeGame.Logic
 
         public event EventHandler TurnStarted;
 
-        public Player(string name, List<Card> deck, List<Card> marketDeck, bool isFirstPlayer)
+        public Player(string name, List<GameCard> deck, List<GameCard> marketDeck, bool isFirstPlayer)
         {
             Name = name;
             Health = 50;
-            _marketDeck = new Stack<Card>(marketDeck);
+            _marketDeck = new Stack<GameCard>(marketDeck);
             _discardPile.AddRange(deck);
             RepopulateDeck();
             var openingHandSize = isFirstPlayer ? 3 : 5;
@@ -43,12 +43,12 @@ namespace SomeGame.Logic
 
         public int Health { get; private set; }
 
-        public IReadOnlyCollection<Card> Hand
+        public IReadOnlyCollection<GameCard> Hand
             => _hand.AsReadOnly();
 
         public IReadOnlyCollection<ResourceAmount> HandResources { get; private set; }
 
-        public IReadOnlyCollection<Card> Market
+        public IReadOnlyCollection<GameCard> Market
             => _market.AsReadOnly();
 
         public IReadOnlyCollection<Minion> Field
@@ -89,15 +89,16 @@ namespace SomeGame.Logic
         private void UpdateHandResources()
         {
             HandResources = _hand
-               .OfType<ResourceCard>()
-               .SelectMany(t => t.Resources)
-               .GroupBy(t => t.Resource)
-               .Select(t => new ResourceAmount
-               {
-                   Resource = t.Key,
-                   Amount = t.Sum(u => u.Amount)
-               })
-               .ToList();
+                .Select(t => t.Card)
+                .OfType<ResourceCard>()
+                .SelectMany(t => t.Resources)
+                .GroupBy(t => t.Resource)
+                .Select(t => new ResourceAmount
+                {
+                    Resource = t.Key,
+                    Amount = t.Sum(u => u.Amount)
+                })
+                .ToList();
         }
 
         public void SetRival(Player player)
@@ -122,14 +123,14 @@ namespace SomeGame.Logic
                 throw new CardNotFoundException();
             }
 
-            if (!HasResources(card.Cost))
+            if (!HasResources(card.Card.Cost))
             {
                 throw new NotEnoughResourcesException();
             }
 
             _market.Remove(card);
             _discardPile.Add(card);
-            RemoveResources(card.Cost);
+            RemoveResources(card.Card.Cost);
             _market.Add(_marketDeck.Pop());
         }
 
@@ -191,19 +192,19 @@ namespace SomeGame.Logic
                 throw new CardNotFoundException();
             }
 
-            if (card is not MinionCard minionCard)
+            if (card.Card is not MinionCard minionCard)
             {
                 throw new InvalidCardTypeException();
             }
 
             _hand.Remove(card);
-            _field.Add(new Minion(minionCard));
+            _field.Add(new Minion(minionCard, cardId));
         }
 
         public void AttackHero(string cardId)
         {
             var minion = Field
-                .Where(t => t.Card.Id.Equals(cardId))
+                .Where(t => t.CardId.Equals(cardId))
                 .FirstOrDefault();
 
             if (minion is null)
@@ -223,7 +224,7 @@ namespace SomeGame.Logic
         public void AttackMinion(string minionId, string minionRivalId)
         {
             var minion = Field
-                .Where(t => t.Card.Id.Equals(minionId))
+                .Where(t => t.CardId.Equals(minionId))
                 .FirstOrDefault();
 
             if (minion is null)
@@ -237,7 +238,7 @@ namespace SomeGame.Logic
             }
 
             var minionRival = _rival.Field
-                .Where(t => t.Card.Id.Equals(minionRivalId))
+                .Where(t => t.CardId.Equals(minionRivalId))
                 .FirstOrDefault();
 
             if (minionRival is null)
@@ -249,7 +250,11 @@ namespace SomeGame.Logic
             {
                 minionRival.Health = 0;
                 _rival._field.Remove(minionRival);
-                _rival._discardPile.Add(minionRival.Card);
+                _rival._discardPile.Add(new GameCard
+                {
+                    Id = minionRival.CardId,
+                    Card = minionRival.Card
+                });
             }
             else
             {

@@ -25,11 +25,11 @@ namespace SomeGame.Cli
             var onlyResource1b = new List<ResourceAmount> { resource1b };
 
             var player1MarketCards = Enumerable.Range(26, 30)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
+                .Select(t => new ResourceCard { Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
                 .Cast<Card>()
                 .ToList();
             var player2MarketCards = Enumerable.Range(56, 30)
-                .Select(t => new ResourceCard { Id = $"c{t}", Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
+                .Select(t => new ResourceCard { Name = $"card {t}", Cost = CalculateCost(t), Resources = onlyResource1b })
                 .Cast<Card>()
                 .ToList();
 
@@ -148,17 +148,17 @@ namespace SomeGame.Cli
 
             foreach (var card in player.Hand)
             {
-                if (card is ResourceCard resourceCard)
+                if (card.Card is ResourceCard resourceCard)
                 {
-                    Console.WriteLine($"{card.Id,4} {card.Name} ({string.Join(", ", resourceCard.Resources.Select(CostText))})");
+                    Console.WriteLine($"{card.Id,4} {card.Card.Name} ({string.Join(", ", resourceCard.Resources.Select(CostText))})");
                 }
-                else if (card is MinionCard minionCard)
+                else if (card.Card is MinionCard minionCard)
                 {
-                    Console.WriteLine($"{card.Id,4} {card.Name} (hp: {minionCard.Health}, atk: {minionCard.Attack})");
+                    Console.WriteLine($"{card.Id,4} {card.Card.Name} (hp: {minionCard.Health}, atk: {minionCard.Attack})");
                 }
                 else
                 {
-                    Console.WriteLine($"{card.Id,4} {card.Name}");
+                    Console.WriteLine($"{card.Id,4} {card.Card.Name}");
                 }
             }
         }
@@ -167,13 +167,13 @@ namespace SomeGame.Cli
         {
             foreach (var card in player.Market)
             {
-                if (card is ResourceCard resourceCard)
+                if (card.Card is ResourceCard resourceCard)
                 {
-                    Console.WriteLine($"{card.Id,-4} {card.Name,-10} ({string.Join(", ", resourceCard.Resources.Select(CostText))}) cost: {string.Join(", ", card.Cost.Select(CostText))}");
+                    Console.WriteLine($"{card.Id,-4} {card.Card.Name,-10} ({string.Join(", ", resourceCard.Resources.Select(CostText))}) cost: {string.Join(", ", card.Card.Cost.Select(CostText))}");
                 }
                 else
                 {
-                    Console.WriteLine($"{card.Id,-4} {card.Name,-10} cost: {string.Join(", ", card.Cost.Select(CostText))}");
+                    Console.WriteLine($"{card.Id,-4} {card.Card.Name,-10} cost: {string.Join(", ", card.Card.Cost.Select(CostText))}");
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace SomeGame.Cli
             foreach (var minion in player.Field)
             {
                 var activeText = minion.Active ? "active" : "not active";
-                Console.WriteLine($"{minion.Card.Id,-4} hp: {minion.Health}, atk: {minion.Attack} ({activeText})");
+                Console.WriteLine($"{minion.CardId,-4} hp: {minion.Health}, atk: {minion.Attack} ({activeText})");
             }
         }
 
