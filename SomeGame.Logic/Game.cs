@@ -41,11 +41,18 @@ namespace SomeGame.Logic
 
             Player1.SetRival(Player2);
             Player2.SetRival(Player1);
+
+            Player1.TurnStarted += PlayerTurnStarted;
+            Player2.TurnStarted += PlayerTurnStarted;
+
+            CurrentPlayer = Player1;
         }
 
         public Player Player1 { get; private set; }
 
         public Player Player2 { get; private set; }
+
+        public Player CurrentPlayer { get; private set; }
 
         private List<GameCard> CreateStartDeck(int startId)
         {
@@ -89,7 +96,7 @@ namespace SomeGame.Logic
         {
             var enumeratorT = t.GetEnumerator();
             var enumeratorU = u.GetEnumerator();
-            while(enumeratorT.MoveNext() && enumeratorU.MoveNext())
+            while (enumeratorT.MoveNext() && enumeratorU.MoveNext())
             {
                 yield return (enumeratorT.Current, enumeratorU.Current);
             }
@@ -103,6 +110,11 @@ namespace SomeGame.Logic
                 yield return current;
                 current++;
             }
+        }
+
+        private void PlayerTurnStarted(object sender, EventArgs e)
+        {
+            CurrentPlayer = sender as Player;
         }
     }
 }
