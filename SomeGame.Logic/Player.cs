@@ -246,21 +246,30 @@ namespace SomeGame.Logic
                 throw new MinionNotFoundException(minionRivalId);
             }
 
-            if (minionRival.Health <= minion.Attack)
+            minionRival.Health -= minion.Attack;
+            minion.Health -= minionRival.Attack;
+
+            if (minionRival.Health <= 0)
             {
-                minionRival.Health = 0;
-                _rival._field.Remove(minionRival);
-                _rival._discardPile.Add(new GameCard
-                {
-                    Id = minionRival.CardId,
-                    Card = minionRival.Card
-                });
+                RemoveMinionFromField(minionRival, _rival);
             }
-            else
+
+            if (minion.Health <= 0)
             {
-                minionRival.Health -= minion.Attack;
+                RemoveMinionFromField(minion, this);
             }
+
             minion.Active = false;
+        }
+
+        private static void RemoveMinionFromField(Minion minion, Player player)
+        {
+            player._field.Remove(minion);
+            player._discardPile.Add(new GameCard
+            {
+                Id = minion.CardId,
+                Card = minion.Card
+            });
         }
     }
 }
