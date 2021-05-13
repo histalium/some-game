@@ -53,7 +53,7 @@ namespace SomeGame.Cli
                 new ShowFieldRivalHandler(game),
                 new ShowHandHandler(game),
                 new ShowHeroHandler(game.Gate1),
-                new ShowHeroRivalHandler(game),
+                new ShowHeroRivalHandler(game.Gate1),
                 new ShowMarketHandler(game),
             };
 
@@ -68,7 +68,7 @@ namespace SomeGame.Cli
                 new ShowFieldRivalHandler(game),
                 new ShowHandHandler(game),
                 new ShowHeroHandler(game.Gate2),
-                new ShowHeroRivalHandler(game),
+                new ShowHeroRivalHandler(game.Gate2),
                 new ShowMarketHandler(game),
             };
 

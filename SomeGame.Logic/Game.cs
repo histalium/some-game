@@ -42,8 +42,8 @@ namespace SomeGame.Logic
             Player1.SetRival(Player2);
             Player2.SetRival(Player1);
 
-            Gate1 = new PlayerGate(Player1);
-            Gate2 = new PlayerGate(Player2);
+            Gate1 = new PlayerGate(Player1, Player2);
+            Gate2 = new PlayerGate(Player2, Player1);
 
             Player1.TurnStarted += PlayerTurnStarted;
             Player2.TurnStarted += PlayerTurnStarted;

@@ -9,10 +9,12 @@ namespace SomeGame.Logic
     public class PlayerGate
     {
         private readonly Player _player;
+        private readonly Player _rival;
 
-        internal PlayerGate(Player player)
+        internal PlayerGate(Player player, Player rival)
         {
             _player = player;
+            _rival = rival;
         }
 
         public string GetPlayerName()
@@ -23,6 +25,16 @@ namespace SomeGame.Logic
         public int GetPlayerHealth()
         {
             return _player.Health;
+        }
+
+        public string GetRivalName()
+        {
+            return _rival.Name;
+        }
+
+        public int GetRivalHealth()
+        {
+            return _rival.Health;
         }
     }
 }
