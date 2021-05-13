@@ -42,6 +42,9 @@ namespace SomeGame.Logic
             Player1.SetRival(Player2);
             Player2.SetRival(Player1);
 
+            Gate1 = new PlayerGate(Player1);
+            Gate2 = new PlayerGate(Player2);
+
             Player1.TurnStarted += PlayerTurnStarted;
             Player2.TurnStarted += PlayerTurnStarted;
 
@@ -53,6 +56,10 @@ namespace SomeGame.Logic
         public Player Player2 { get; private set; }
 
         public Player CurrentPlayer { get; private set; }
+
+        public PlayerGate Gate1 { get; private set; }
+
+        public PlayerGate Gate2 { get; private set; }
 
         private List<GameCard> CreateStartDeck(int startId)
         {

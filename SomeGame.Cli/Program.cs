@@ -42,7 +42,7 @@ namespace SomeGame.Cli
 
             Console.WriteLine($"{_currentPlayer.Name} is current player");
 
-            var commandHandlers = new List<CliCommandHandler>
+            var commandHandlers1 = new List<CliCommandHandler>
             {
                 new AddToFieldHandler(game),
                 new AttackHeroHandler(game),
@@ -52,7 +52,22 @@ namespace SomeGame.Cli
                 new ShowFieldHandler(game),
                 new ShowFieldRivalHandler(game),
                 new ShowHandHandler(game),
-                new ShowHeroHandler(game),
+                new ShowHeroHandler(game.Gate1),
+                new ShowHeroRivalHandler(game),
+                new ShowMarketHandler(game),
+            };
+
+            var commandHandlers2 = new List<CliCommandHandler>
+            {
+                new AddToFieldHandler(game),
+                new AttackHeroHandler(game),
+                new AttackMinionHandler(game),
+                new BuyCardHandler(game),
+                new EndTurnHandler(game),
+                new ShowFieldHandler(game),
+                new ShowFieldRivalHandler(game),
+                new ShowHandHandler(game),
+                new ShowHeroHandler(game.Gate2),
                 new ShowHeroRivalHandler(game),
                 new ShowMarketHandler(game),
             };
@@ -60,7 +75,8 @@ namespace SomeGame.Cli
             while (true)
             {
                 var line = Console.ReadLine();
-                var match = commandHandlers
+                var handlers = _currentPlayer == player1 ? commandHandlers1 : commandHandlers2;
+                var match = handlers
                     .Select(t => (Match: t.CommandPattern.Match(line), Handler: t))
                     .Where(t => t.Match.Success)
                     .FirstOrDefault();

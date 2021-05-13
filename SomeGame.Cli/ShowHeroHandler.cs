@@ -9,17 +9,19 @@ namespace SomeGame.Cli
 {
     internal class ShowHeroHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public ShowHeroHandler(Game game)
+        public ShowHeroHandler(PlayerGate gate)
             : base("^show hero$", Array.Empty<string>())
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            yield return $"{_game.CurrentPlayer.Name} (hp: {_game.CurrentPlayer.Health})";
+            var name = _gate.GetPlayerName();
+            var health = _gate.GetPlayerHealth();
+            yield return $"{name} (hp: {health})";
         }
     }
 }
