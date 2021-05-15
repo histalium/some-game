@@ -22,7 +22,7 @@ namespace SomeGame.TextCommands
                 new EndTurnHandler(game),
                 new ShowFieldHandler(game),
                 new ShowFieldRivalHandler(game),
-                new ShowHandHandler(game),
+                new ShowHandHandler(gate),
                 new ShowHeroHandler(gate),
                 new ShowHeroRivalHandler(gate),
                 new ShowMarketHandler(game),

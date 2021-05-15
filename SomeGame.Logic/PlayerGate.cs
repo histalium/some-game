@@ -36,5 +36,15 @@ namespace SomeGame.Logic
         {
             return _rival.Health;
         }
+
+        public IReadOnlyCollection<ResourceAmount> GetHandResources()
+        {
+            return _player.HandResources;
+        }
+
+        public IReadOnlyCollection<GameCard> GetHand()
+        {
+            return _player.Hand;
+        }
     }
 }

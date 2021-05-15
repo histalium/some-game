@@ -9,22 +9,22 @@ namespace SomeGame.TextCommands
 {
     internal class ShowHandHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public ShowHandHandler(Game game)
+        public ShowHandHandler(PlayerGate gate)
             : base("^show hand$", Array.Empty<string>())
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            foreach (var resource in _game.CurrentPlayer.HandResources)
+            foreach (var resource in _gate.GetHandResources())
             {
                 yield return $"{resource.Resource.Id}: {resource.Amount}";
             }
 
-            foreach (var card in _game.CurrentPlayer.Hand)
+            foreach (var card in _gate.GetHand())
             {
                 if (card.Card is ResourceCard resourceCard)
                 {
