@@ -61,8 +61,8 @@ namespace SomeGame.Server
                             .ToList();
 
                         var game = new Game(other.Name, marketCards, c.Name, marketCards);
-                        c.StartGame(game);
-                        other.StartGame(game);
+                        c.StartGame(game.Gate2, game);
+                        other.StartGame(game.Gate1, game);
                     }
 
                     _clients.Add(c);

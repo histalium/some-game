@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal class ShowHeroRivalHandler : CliCommandHandler
     {

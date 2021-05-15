@@ -1,4 +1,5 @@
 ﻿using SomeGame.Logic;
+using SomeGame.TextCommands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,59 +43,19 @@ namespace SomeGame.Cli
 
             Console.WriteLine($"{_currentPlayer.Name} is current player");
 
-            var commandHandlers1 = new List<CliCommandHandler>
-            {
-                new AddToFieldHandler(game),
-                new AttackHeroHandler(game),
-                new AttackMinionHandler(game),
-                new BuyCardHandler(game),
-                new EndTurnHandler(game),
-                new ShowFieldHandler(game),
-                new ShowFieldRivalHandler(game),
-                new ShowHandHandler(game),
-                new ShowHeroHandler(game.Gate1),
-                new ShowHeroRivalHandler(game.Gate1),
-                new ShowMarketHandler(game),
-            };
+            var commandHandlers1 = new InputProcessor(game.Gate1, game);
 
-            var commandHandlers2 = new List<CliCommandHandler>
-            {
-                new AddToFieldHandler(game),
-                new AttackHeroHandler(game),
-                new AttackMinionHandler(game),
-                new BuyCardHandler(game),
-                new EndTurnHandler(game),
-                new ShowFieldHandler(game),
-                new ShowFieldRivalHandler(game),
-                new ShowHandHandler(game),
-                new ShowHeroHandler(game.Gate2),
-                new ShowHeroRivalHandler(game.Gate2),
-                new ShowMarketHandler(game),
-            };
+            var commandHandlers2 = new InputProcessor(game.Gate2, game);
 
             while (true)
             {
-                var line = Console.ReadLine();
+                var input = Console.ReadLine();
                 var handlers = _currentPlayer == player1 ? commandHandlers1 : commandHandlers2;
-                var match = handlers
-                    .Select(t => (Match: t.CommandPattern.Match(line), Handler: t))
-                    .Where(t => t.Match.Success)
-                    .FirstOrDefault();
+                var output = handlers.Process(input);
 
-                if (match.Match?.Success == true)
+                foreach (var line in output)
                 {
-                    var args = match.Handler.ArgNames
-                        .Select(t => match.Match.Groups[t].Value)
-                        .ToArray();
-
-                    foreach (var write in match.Handler.Handle(args))
-                    {
-                        Console.WriteLine(write);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("invalid command");
+                    Console.WriteLine(line);
                 }
             }
         }
@@ -129,18 +90,5 @@ namespace SomeGame.Cli
             Console.WriteLine($"{_currentPlayer.Name} is current player");
         }
 
-        internal static string CostText(ResourceAmount cost)
-        {
-            return $"{cost.Amount} {cost.Resource.Id}";
-        }
-
-        internal static IEnumerable<string> PrintField(Player player)
-        {
-            foreach (var minion in player.Field)
-            {
-                var activeText = minion.Active ? "active" : "not active";
-                yield return $"{minion.CardId,-4} hp: {minion.Health}, atk: {minion.Attack} ({activeText})";
-            }
-        }
     }
 }

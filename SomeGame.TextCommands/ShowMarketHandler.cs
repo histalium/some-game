@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal class ShowMarketHandler : CliCommandHandler
     {
@@ -23,11 +23,11 @@ namespace SomeGame.Cli
             {
                 if (card.Card is ResourceCard resourceCard)
                 {
-                    yield return $"{card.Id,-4} {card.Card.Name,-10} ({string.Join(", ", resourceCard.Resources.Select(Program.CostText))}) cost: {string.Join(", ", card.Card.Cost.Select(Program.CostText))}";
+                    yield return $"{card.Id,-4} {card.Card.Name,-10} ({string.Join(", ", resourceCard.Resources.Select(Utilities.CostText))}) cost: {string.Join(", ", card.Card.Cost.Select(Utilities.CostText))}";
                 }
                 else
                 {
-                    yield return $"{card.Id,-4} {card.Card.Name,-10} cost: {string.Join(", ", card.Card.Cost.Select(Program.CostText))}";
+                    yield return $"{card.Id,-4} {card.Card.Name,-10} cost: {string.Join(", ", card.Card.Cost.Select(Utilities.CostText))}";
                 }
             }
         }

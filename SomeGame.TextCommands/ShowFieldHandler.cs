@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal class ShowFieldHandler : CliCommandHandler
     {
@@ -19,7 +19,7 @@ namespace SomeGame.Cli
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            return Program.PrintField(_game.CurrentPlayer);
+            return Utilities.PrintField(_game.CurrentPlayer);
         }
     }
 }

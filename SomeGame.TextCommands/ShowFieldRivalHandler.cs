@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal class ShowFieldRivalHandler : CliCommandHandler
     {
@@ -20,7 +20,7 @@ namespace SomeGame.Cli
         public override IEnumerable<string> Handle(string[] args)
         {
             var rival = _game.CurrentPlayer == _game.Player1 ? _game.Player2 : _game.Player1;
-            return Program.PrintField(rival);
+            return Utilities.PrintField(rival);
         }
     }
 }

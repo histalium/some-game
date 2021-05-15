@@ -1,4 +1,5 @@
 ﻿using SomeGame.Logic;
+using SomeGame.TextCommands;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,7 @@ namespace SomeGame.Server
     {
         private readonly StreamWriter _writer;
         private readonly StreamReader _reader;
+        private InputProcessor _inputProcessor;
 
         public Client(Stream stream, string name)
         {
@@ -27,16 +29,28 @@ namespace SomeGame.Server
             var line = _reader.ReadLine();
             while (line is not null)
             {
-                Console.WriteLine(line);
+                ProcessInput(line);
                 line = _reader.ReadLine();
             }
         }
 
-        public void StartGame(Game game)
+        private void ProcessInput(string input)
+        {
+            var output = _inputProcessor.Process(input);
+            foreach (var line in output)
+            {
+                _writer.WriteLine(line);
+            }
+            _writer.Flush();
+        }
+
+        public void StartGame(PlayerGate gate, Game game)
         {
             _writer.WriteLine($"Player 1: {game.Player1.Name}");
             _writer.WriteLine($"Player 2: {game.Player2.Name}");
             _writer.Flush();
+
+            _inputProcessor = new InputProcessor(gate, game);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal abstract class CliCommandHandler
     {

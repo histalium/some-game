@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Logic", "SomeGame.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Server", "SomeGame.Server\SomeGame.Server.csproj", "{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.TextCommands", "SomeGame.TextCommands\SomeGame.TextCommands.csproj", "{5A241FED-32EA-4B33-A856-D525B2F16C7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}.Release|x64.Build.0 = Release|Any CPU
 		{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}.Release|x86.ActiveCfg = Release|Any CPU
 		{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}.Release|x86.Build.0 = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x64.Build.0 = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

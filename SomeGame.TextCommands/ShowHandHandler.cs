@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomeGame.Cli
+namespace SomeGame.TextCommands
 {
     internal class ShowHandHandler : CliCommandHandler
     {
@@ -28,7 +28,7 @@ namespace SomeGame.Cli
             {
                 if (card.Card is ResourceCard resourceCard)
                 {
-                    yield return $"{card.Id,-4} {card.Card.Name} ({string.Join(", ", resourceCard.Resources.Select(Program.CostText))})";
+                    yield return $"{card.Id,-4} {card.Card.Name} ({string.Join(", ", resourceCard.Resources.Select(Utilities.CostText))})";
                 }
                 else if (card.Card is MinionCard minionCard)
                 {
