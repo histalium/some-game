@@ -46,5 +46,10 @@ namespace SomeGame.Logic
         {
             return _player.Hand;
         }
+
+        public void AddMinionToField(string cardId)
+        {
+            _player.AddMinionToField(cardId);
+        }
     }
 }
