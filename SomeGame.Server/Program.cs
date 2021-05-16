@@ -12,9 +12,12 @@ namespace SomeGame.Server
     class Program
     {
         private static List<Client> _clients = new();
+        private static List<Card> _defaultMarket;
 
         static void Main(string[] args)
         {
+            _defaultMarket = BuildDefaultMarket();
+
             var port = 8080;
             var listener = new TcpListener(IPAddress.Any, port);
 
@@ -25,6 +28,21 @@ namespace SomeGame.Server
             Console.ReadKey();
 
             listener.Stop();
+        }
+
+        private static List<Card> BuildDefaultMarket()
+        {
+            var card = new ResourceCard
+            {
+                Name = "Market card",
+                Cost = new[] { new ResourceAmount { Amount = 2, Resource = new Resource { Id = "r1" } } }
+            };
+            var market = Enumerable.Range(26, 30)
+                .Select(t => card)
+                .Cast<Card>()
+                .ToList();
+
+            return market;
         }
 
         private static void ConnectClient(IAsyncResult result)
@@ -38,42 +56,44 @@ namespace SomeGame.Server
             {
                 var ns = client.GetStream();
                 var reader = new StreamReader(ns, Encoding.ASCII);
+                var writer = new StreamWriter(ns, Encoding.ASCII);
+
+                var name = "anonymous";
+
                 var line = reader.ReadLine();
-                if (line.StartsWith("player ", StringComparison.OrdinalIgnoreCase))
+                while (line is not null)
                 {
-                    var player = line.Substring(7);
-                    var c = new Client(ns, player);
-
-                    var other = _clients
-                        .Where(t => t != c)
-                        .FirstOrDefault();
-
-                    if (other != null)
+                    if (line.StartsWith("player ", StringComparison.OrdinalIgnoreCase))
                     {
-                        var card = new ResourceCard
-                        {
-                            Name = "Market card",
-                            Cost = new[] { new ResourceAmount { Amount = 2, Resource = new Resource { Id = "r1" } } }
-                        };
-                        var marketCards = Enumerable.Range(26, 30)
-                            .Select(t => card)
-                            .Cast<Card>()
-                            .ToList();
-
-                        var game = new Game(other.Name, marketCards, c.Name, marketCards);
-                        c.StartGame(game.Gate2, game);
-                        other.StartGame(game.Gate1, game);
+                        name = line.Substring(7);
                     }
+                    else if (line.Equals("find game", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var other = _clients
+                            .FirstOrDefault();
 
-                    _clients.Add(c);
-                    c.Run();
-                    _clients.Remove(c);
-                }
-                else
-                {
-                    var writer = new StreamWriter(ns, Encoding.ASCII);
-                    writer.WriteLine("400 invalid command");
-                    writer.Flush();
+                        if (other != null)
+                        {
+                            _clients.Remove(other);
+                            var c = new Client(ns, name);
+                            var game = new Game(other.Name, _defaultMarket, c.Name, _defaultMarket);
+                            c.StartGame(game.Gate2, game);
+                            other.StartGame(game.Gate1, game);
+                            c.Run();
+                        }
+                        else
+                        {
+                            var c = new Client(ns, name);
+                            _clients.Add(c);
+                            c.Run();
+                        }
+                    }
+                    else
+                    {
+                        writer.WriteLine("invalid command");
+                        writer.Flush();
+                    }
+                    line = reader.ReadLine();
                 }
 
                 client.Close();
