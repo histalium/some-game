@@ -9,12 +9,12 @@ namespace SomeGame.TextCommands
 {
     internal class AttackHeroHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public AttackHeroHandler(Game game)
+        public AttackHeroHandler(PlayerGate gate)
             : base(@"^attack hero with (?<minion>c\d+)$", new[] { "minion" })
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
@@ -22,7 +22,7 @@ namespace SomeGame.TextCommands
             var minion = args[0];
             try
             {
-                _game.CurrentPlayer.AttackHero(minion);
+                _gate.AttackHero(minion);
                 return Array.Empty<string>();
             }
             catch (MinionNotFoundException)

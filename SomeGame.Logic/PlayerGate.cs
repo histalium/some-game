@@ -51,5 +51,10 @@ namespace SomeGame.Logic
         {
             _player.AddMinionToField(cardId);
         }
+
+        public void AttackHero(string minion)
+        {
+            _player.AttackHero(minion);
+        }
     }
 }

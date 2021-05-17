@@ -16,7 +16,7 @@ namespace SomeGame.TextCommands
             _handlers = new List<CliCommandHandler>
             {
                 new AddToFieldHandler(gate),
-                new AttackHeroHandler(game),
+                new AttackHeroHandler(gate),
                 new AttackMinionHandler(game),
                 new BuyCardHandler(game),
                 new EndTurnHandler(game),
