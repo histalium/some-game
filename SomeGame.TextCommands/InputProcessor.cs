@@ -17,7 +17,7 @@ namespace SomeGame.TextCommands
             {
                 new AddToFieldHandler(gate),
                 new AttackHeroHandler(gate),
-                new AttackMinionHandler(game),
+                new AttackMinionHandler(gate),
                 new BuyCardHandler(game),
                 new EndTurnHandler(game),
                 new ShowFieldHandler(game),

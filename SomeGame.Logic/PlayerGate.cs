@@ -56,5 +56,10 @@ namespace SomeGame.Logic
         {
             _player.AttackHero(minion);
         }
+
+        public void AttackMinion(string minion, string minionRival)
+        {
+            _player.AttackMinion(minion, minionRival);
+        }
     }
 }
