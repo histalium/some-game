@@ -20,8 +20,15 @@ namespace SomeGame.TextCommands
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            _game.CurrentPlayer.EndTurn();
-            return Enumerable.Empty<string>();
+            try
+            {
+                _game.CurrentPlayer.EndTurn();
+                return Enumerable.Empty<string>();
+            }
+            catch(NotCurrentPlayerException)
+            {
+                return new[] { "You are not the current player" };
+            }
         }
     }
 }

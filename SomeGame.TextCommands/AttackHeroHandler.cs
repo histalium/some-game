@@ -33,6 +33,10 @@ namespace SomeGame.TextCommands
             {
                 return new[] { "Minion is not active" };
             }
+            catch (NotCurrentPlayerException)
+            {
+                return new[] { "You are not the current player" };
+            }
         }
     }
 }

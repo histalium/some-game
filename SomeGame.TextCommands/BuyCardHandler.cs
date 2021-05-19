@@ -33,6 +33,10 @@ namespace SomeGame.TextCommands
             {
                 return new[] { "You don't have enough resources to buy this card" };
             }
+            catch (NotCurrentPlayerException)
+            {
+                return new[] { "You are not the current player" };
+            }
         }
     }
 }

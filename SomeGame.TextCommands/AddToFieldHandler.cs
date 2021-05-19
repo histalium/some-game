@@ -33,6 +33,10 @@ namespace SomeGame.TextCommands
             {
                 return new[] { "Card type can't be added to field" };
             }
+            catch (NotCurrentPlayerException)
+            {
+                return new[] { "You are not the current player" };
+            }
         }
     }
 }

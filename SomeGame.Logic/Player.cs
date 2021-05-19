@@ -15,6 +15,7 @@ namespace SomeGame.Logic
         private readonly List<GameCard> _market = new();
         private readonly List<Minion> _field = new();
         private Player _rival;
+        private bool _currentPlayer;
 
         public event EventHandler TurnEnded;
 
@@ -27,6 +28,7 @@ namespace SomeGame.Logic
             _marketDeck = new Stack<GameCard>(marketDeck);
             _discardPile.AddRange(deck);
             RepopulateDeck();
+            _currentPlayer = isFirstPlayer;
             var openingHandSize = isFirstPlayer ? 3 : 5;
             for (var i = 0; i < openingHandSize; i++)
             {
@@ -56,6 +58,8 @@ namespace SomeGame.Logic
 
         public void EndTurn()
         {
+            ValidateIsCurrentPlayer();
+
             _discardPile.AddRange(_hand);
             _hand.Clear();
             for (var i = 0; i < 5; i++)
@@ -71,6 +75,7 @@ namespace SomeGame.Logic
             {
                 minion.Active = true;
             }
+            _currentPlayer = false;
             TurnEnded?.Invoke(this, EventArgs.Empty);
         }
 
@@ -109,11 +114,14 @@ namespace SomeGame.Logic
 
         private void OtherPlayerTurnEnded(object sender, EventArgs e)
         {
+            _currentPlayer = true;
             TurnStarted?.Invoke(this, EventArgs.Empty);
         }
 
         public void BuyCard(string cardId)
         {
+            ValidateIsCurrentPlayer();
+
             var card = Market
                 .Where(t => t.Id.Equals(cardId))
                 .FirstOrDefault();
@@ -183,6 +191,8 @@ namespace SomeGame.Logic
 
         public void AddMinionToField(string cardId)
         {
+            ValidateIsCurrentPlayer();
+
             var card = Hand
                 .Where(t => t.Id.Equals(cardId))
                 .FirstOrDefault();
@@ -203,6 +213,8 @@ namespace SomeGame.Logic
 
         public void AttackHero(string cardId)
         {
+            ValidateIsCurrentPlayer();
+
             var minion = Field
                 .Where(t => t.CardId.Equals(cardId))
                 .FirstOrDefault();
@@ -223,6 +235,8 @@ namespace SomeGame.Logic
 
         public void AttackMinion(string minionId, string minionRivalId)
         {
+            ValidateIsCurrentPlayer();
+
             var minion = Field
                 .Where(t => t.CardId.Equals(minionId))
                 .FirstOrDefault();
@@ -270,6 +284,14 @@ namespace SomeGame.Logic
                 Id = minion.CardId,
                 Card = minion.Card
             });
+        }
+
+        private void ValidateIsCurrentPlayer()
+        {
+            if (!_currentPlayer)
+            {
+                throw new NotCurrentPlayerException();
+            }
         }
     }
 }
