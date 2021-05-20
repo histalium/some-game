@@ -9,12 +9,12 @@ namespace SomeGame.TextCommands
 {
     internal class BuyCardHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public BuyCardHandler(Game game)
+        public BuyCardHandler(PlayerGate gate)
             : base(@"^buy (?<card>c\d+)$", new[] { "card" })
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
@@ -22,7 +22,7 @@ namespace SomeGame.TextCommands
             var cardId = args[0];
             try
             {
-                _game.CurrentPlayer.BuyCard(cardId);
+                _gate.BuyCard(cardId);
                 return Array.Empty<string>();
             }
             catch (CardNotFoundException)

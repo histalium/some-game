@@ -61,5 +61,10 @@ namespace SomeGame.Logic
         {
             _player.AttackMinion(minion, minionRival);
         }
+
+        public void BuyCard(string cardId)
+        {
+            _player.BuyCard(cardId);
+        }
     }
 }

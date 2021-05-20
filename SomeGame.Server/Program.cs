@@ -35,7 +35,8 @@ namespace SomeGame.Server
             var card = new ResourceCard
             {
                 Name = "Market card",
-                Cost = new[] { new ResourceAmount { Amount = 2, Resource = new Resource { Id = "r1" } } }
+                Cost = new[] { new ResourceAmount { Amount = 2, Resource = new Resource { Id = "ra" } } },
+                Resources = new[] { new ResourceAmount { Amount = 1, Resource = new Resource { Id = "rb" } } }
             };
             var market = Enumerable.Range(26, 30)
                 .Select(t => card)
