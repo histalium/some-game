@@ -56,6 +56,9 @@ namespace SomeGame.Logic
         public IReadOnlyCollection<Minion> Field
             => _field.AsReadOnly();
 
+        public bool IsCurrentPlayer
+            => _currentPlayer;
+
         public void EndTurn()
         {
             ValidateIsCurrentPlayer();

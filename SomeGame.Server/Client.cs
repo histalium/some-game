@@ -48,6 +48,8 @@ namespace SomeGame.Server
         {
             _writer.WriteLine($"Player 1: {game.Player1.Name}");
             _writer.WriteLine($"Player 2: {game.Player2.Name}");
+            _writer.WriteLine();
+            _writer.WriteLine($"{gate.GetCurrentPlayerName()} at play");
             _writer.Flush();
 
             _inputProcessor = new InputProcessor(gate, game);

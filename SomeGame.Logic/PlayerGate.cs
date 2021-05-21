@@ -66,5 +66,17 @@ namespace SomeGame.Logic
         {
             _player.BuyCard(cardId);
         }
+
+        public string GetCurrentPlayerName()
+        {
+            if(_player.IsCurrentPlayer)
+            {
+                return _player.Name;
+            }
+            else
+            {
+                return _rival.Name;
+            }
+        }
     }
 }
