@@ -11,10 +11,25 @@ namespace SomeGame.Logic
         private readonly Player _player;
         private readonly Player _rival;
 
+        public event EventHandler<CurrentPlayerChangedEventArgs> CurrentPlayerChanged;
+
         internal PlayerGate(Player player, Player rival)
         {
             _player = player;
             _rival = rival;
+
+            _player.TurnStarted += PlayerTurnStarted;
+            _rival.TurnStarted += RivalTurnStarted;
+        }
+
+        private void RivalTurnStarted(object sender, EventArgs e)
+        {
+            CurrentPlayerChanged?.Invoke(this, new CurrentPlayerChangedEventArgs(_rival.Name));
+        }
+
+        private void PlayerTurnStarted(object sender, EventArgs e)
+        {
+            CurrentPlayerChanged?.Invoke(this, new CurrentPlayerChangedEventArgs(_player.Name));
         }
 
         public string GetPlayerName()
@@ -69,7 +84,7 @@ namespace SomeGame.Logic
 
         public string GetCurrentPlayerName()
         {
-            if(_player.IsCurrentPlayer)
+            if (_player.IsCurrentPlayer)
             {
                 return _player.Name;
             }

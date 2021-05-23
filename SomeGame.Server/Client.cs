@@ -46,6 +46,7 @@ namespace SomeGame.Server
 
         public void StartGame(PlayerGate gate, Game game)
         {
+            gate.CurrentPlayerChanged += CurrendPlayerChanged;
             _writer.WriteLine($"Player 1: {game.Player1.Name}");
             _writer.WriteLine($"Player 2: {game.Player2.Name}");
             _writer.WriteLine();
@@ -53,6 +54,12 @@ namespace SomeGame.Server
             _writer.Flush();
 
             _inputProcessor = new InputProcessor(gate, game);
+        }
+
+        private void CurrendPlayerChanged(object sender, CurrentPlayerChangedEventArgs e)
+        {
+            _writer.WriteLine($"{e.CurrentPlayerName} at play");
+            _writer.Flush();
         }
     }
 }
