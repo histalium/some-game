@@ -9,17 +9,17 @@ namespace SomeGame.TextCommands
 {
     internal class ShowFieldHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public ShowFieldHandler(Game game)
+        public ShowFieldHandler(PlayerGate gate)
             : base("^show field$", Array.Empty<string>())
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            return Utilities.PrintField(_game.CurrentPlayer);
+            return Utilities.PrintField(_gate.GetField());
         }
     }
 }

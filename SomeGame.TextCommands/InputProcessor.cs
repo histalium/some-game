@@ -20,7 +20,7 @@ namespace SomeGame.TextCommands
                 new AttackMinionHandler(gate),
                 new BuyCardHandler(gate),
                 new EndTurnHandler(gate),
-                new ShowFieldHandler(game),
+                new ShowFieldHandler(gate),
                 new ShowFieldRivalHandler(game),
                 new ShowHandHandler(gate),
                 new ShowHeroHandler(gate),

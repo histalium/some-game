@@ -98,5 +98,10 @@ namespace SomeGame.Logic
         {
             _player.EndTurn();
         }
+
+        public IReadOnlyCollection<Minion> GetField()
+        {
+            return _player.Field;
+        }
     }
 }
