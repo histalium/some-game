@@ -93,5 +93,10 @@ namespace SomeGame.Logic
                 return _rival.Name;
             }
         }
+
+        public void EndTurn()
+        {
+            _player.EndTurn();
+        }
     }
 }

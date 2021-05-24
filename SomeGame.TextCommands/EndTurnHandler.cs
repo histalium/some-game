@@ -10,19 +10,19 @@ namespace SomeGame.TextCommands
 {
     internal class EndTurnHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public EndTurnHandler(Game game)
+        public EndTurnHandler(PlayerGate gate)
             : base("^end turn$", Array.Empty<string>())
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
         {
             try
             {
-                _game.CurrentPlayer.EndTurn();
+                _gate.EndTurn();
                 return Enumerable.Empty<string>();
             }
             catch(NotCurrentPlayerException)
