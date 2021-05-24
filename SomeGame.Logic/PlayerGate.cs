@@ -103,5 +103,10 @@ namespace SomeGame.Logic
         {
             return _player.Field;
         }
+
+        public IReadOnlyCollection<Minion> GetFieldRival()
+        {
+            return _rival.Field;
+        }
     }
 }

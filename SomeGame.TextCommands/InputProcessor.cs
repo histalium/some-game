@@ -21,7 +21,7 @@ namespace SomeGame.TextCommands
                 new BuyCardHandler(gate),
                 new EndTurnHandler(gate),
                 new ShowFieldHandler(gate),
-                new ShowFieldRivalHandler(game),
+                new ShowFieldRivalHandler(gate),
                 new ShowHandHandler(gate),
                 new ShowHeroHandler(gate),
                 new ShowHeroRivalHandler(gate),
