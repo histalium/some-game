@@ -11,7 +11,7 @@ namespace SomeGame.TextCommands
     {
         private readonly List<CliCommandHandler> _handlers;
 
-        public InputProcessor(PlayerGate gate, Game game)
+        public InputProcessor(PlayerGate gate)
         {
             _handlers = new List<CliCommandHandler>
             {
@@ -25,7 +25,7 @@ namespace SomeGame.TextCommands
                 new ShowHandHandler(gate),
                 new ShowHeroHandler(gate),
                 new ShowHeroRivalHandler(gate),
-                new ShowMarketHandler(game),
+                new ShowMarketHandler(gate),
             };
         }
 

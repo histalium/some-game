@@ -9,17 +9,17 @@ namespace SomeGame.TextCommands
 {
     internal class ShowMarketHandler : CliCommandHandler
     {
-        private readonly Game _game;
+        private readonly PlayerGate _gate;
 
-        public ShowMarketHandler(Game game)
+        public ShowMarketHandler(PlayerGate gate)
             : base("^show market$", Array.Empty<string>())
         {
-            _game = game;
+            _gate = gate;
         }
 
         public override IEnumerable<string> Handle(string[] args)
         {
-            foreach (var card in _game.CurrentPlayer.Market)
+            foreach (var card in _gate.GetMarket())
             {
                 if (card.Card is ResourceCard resourceCard)
                 {

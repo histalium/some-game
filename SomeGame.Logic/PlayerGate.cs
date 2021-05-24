@@ -108,5 +108,10 @@ namespace SomeGame.Logic
         {
             return _rival.Field;
         }
+
+        public IReadOnlyCollection<GameCard> GetMarket()
+        {
+            return _player.Market;
+        }
     }
 }

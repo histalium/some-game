@@ -53,7 +53,7 @@ namespace SomeGame.Server
             _writer.WriteLine($"{gate.GetCurrentPlayerName()} at play");
             _writer.Flush();
 
-            _inputProcessor = new InputProcessor(gate, game);
+            _inputProcessor = new InputProcessor(gate);
         }
 
         private void CurrendPlayerChanged(object sender, CurrentPlayerChangedEventArgs e)

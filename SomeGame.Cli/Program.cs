@@ -43,9 +43,9 @@ namespace SomeGame.Cli
 
             Console.WriteLine($"{_currentPlayer.Name} is current player");
 
-            var commandHandlers1 = new InputProcessor(game.Gate1, game);
+            var commandHandlers1 = new InputProcessor(game.Gate1);
 
-            var commandHandlers2 = new InputProcessor(game.Gate2, game);
+            var commandHandlers2 = new InputProcessor(game.Gate2);
 
             while (true)
             {
