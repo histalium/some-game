@@ -32,18 +32,41 @@ namespace SomeGame.Server
 
         private static List<Card> BuildDefaultMarket()
         {
-            var card = new ResourceCard
+            var ra = new Resource { Id = "ra" };
+            var rb = new Resource { Id = "rb" };
+            var twoOfA = new ResourceCard
             {
-                Name = "Market card",
-                Cost = new[] { new ResourceAmount { Amount = 2, Resource = new Resource { Id = "ra" } } },
-                Resources = new[] { new ResourceAmount { Amount = 1, Resource = new Resource { Id = "rb" } } }
+                Name = "Two of A",
+                Cost = new[] { new ResourceAmount { Amount = 3, Resource = ra } },
+                Resources = new[] { new ResourceAmount { Amount = 2, Resource = ra } }
             };
-            var market = Enumerable.Range(26, 30)
-                .Select(t => card)
-                .Cast<Card>()
-                .ToList();
+            var oneOfB = new ResourceCard
+            {
+                Name = "One of B",
+                Cost = new[] { new ResourceAmount { Amount = 2, Resource = ra } },
+                Resources = new[] { new ResourceAmount { Amount = 1, Resource = rb } }
+            };
+            var woop = new MinionCard
+            {
+                Name = "Woop",
+                Cost = new[] { new ResourceAmount { Amount = 2, Resource = rb } },
+                Health = 2,
+                Attack = 2
+            };
+            var fiveTwoOfAs = Enumerable.Range(0, 5)
+                .Select(t => twoOfA)
+                .Cast<Card>();
+            var tenWoops = Enumerable.Range(0, 10)
+                .Select(t => woop)
+                .Cast<Card>();
+            var fifteenOneOfBs = Enumerable.Range(0, 15)
+                .Select(t => oneOfB)
+                .Cast<Card>();
 
-            return market;
+            return fifteenOneOfBs
+                .Concat(fiveTwoOfAs)
+                .Concat(tenWoops)
+                .ToList();
         }
 
         private static void ConnectClient(IAsyncResult result)
