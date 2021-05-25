@@ -11,7 +11,7 @@ namespace SomeGame.Logic
         private readonly Stack<GameCard> _deck = new();
         private readonly List<GameCard> _discardPile = new();
         private readonly List<GameCard> _hand = new();
-        private readonly Stack<GameCard> _marketDeck;
+        private readonly Stack<GameCard> _marketDeck = new();
         private readonly List<GameCard> _market = new();
         private readonly List<Minion> _field = new();
         private Player _rival;
@@ -25,7 +25,7 @@ namespace SomeGame.Logic
         {
             Name = name;
             Health = 50;
-            _marketDeck = new Stack<GameCard>(marketDeck);
+            PopulateMarket(marketDeck);
             _discardPile.AddRange(deck);
             RepopulateDeck();
             _currentPlayer = isFirstPlayer;
@@ -80,6 +80,18 @@ namespace SomeGame.Logic
             }
             _currentPlayer = false;
             TurnEnded?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopulateMarket(List<GameCard> cards)
+        {
+            var random = new Random();
+            while (cards.Count > 0)
+            {
+                var i = random.Next(cards.Count);
+                var card = cards[i];
+                cards.Remove(card);
+                _marketDeck.Push(card);
+            }
         }
 
         private void RepopulateDeck()
