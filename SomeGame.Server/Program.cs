@@ -1,4 +1,5 @@
-﻿using SomeGame.Logic;
+﻿using SomeGame.Decks;
+using SomeGame.Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace SomeGame.Server
     {
         private static List<Client> _clients = new();
         private static List<Card> _defaultMarket;
+        private static List<Deck> _decks = new();
 
         static void Main(string[] args)
         {
@@ -111,6 +113,12 @@ namespace SomeGame.Server
                             _clients.Add(c);
                             c.Run();
                         }
+                    }
+                    else if (line.StartsWith("create deck ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var deckLogic = new DeckLogic((deck) => _decks.Add(deck));
+                        var deckName = line.Substring("create deck ".Length);
+                        deckLogic.CreateDeck(name, deckName);
                     }
                     else
                     {

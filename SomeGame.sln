@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Cli", "SomeGame.Cli\SomeGame.Cli.csproj", "{D4D4D092-A43D-487C-9DDE-3931B60F451F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SomeGame.Cli", "SomeGame.Cli\SomeGame.Cli.csproj", "{D4D4D092-A43D-487C-9DDE-3931B60F451F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Logic", "SomeGame.Logic\SomeGame.Logic.csproj", "{D93453CB-93C6-469A-9081-EA1E0D6355FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SomeGame.Logic", "SomeGame.Logic\SomeGame.Logic.csproj", "{D93453CB-93C6-469A-9081-EA1E0D6355FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Server", "SomeGame.Server\SomeGame.Server.csproj", "{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SomeGame.Server", "SomeGame.Server\SomeGame.Server.csproj", "{8DD6207E-29D3-4B25-BDD0-784DF150F0BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.TextCommands", "SomeGame.TextCommands\SomeGame.TextCommands.csproj", "{5A241FED-32EA-4B33-A856-D525B2F16C7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SomeGame.TextCommands", "SomeGame.TextCommands\SomeGame.TextCommands.csproj", "{5A241FED-32EA-4B33-A856-D525B2F16C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeGame.Decks", "SomeGame.Decks\SomeGame.Decks.csproj", "{651AA595-219E-48F3-8D2C-1003FB073240}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,18 @@ Global
 		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x64.Build.0 = Release|Any CPU
 		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A241FED-32EA-4B33-A856-D525B2F16C7F}.Release|x86.Build.0 = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|x64.Build.0 = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Debug|x86.Build.0 = Debug|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|x64.ActiveCfg = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|x64.Build.0 = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|x86.ActiveCfg = Release|Any CPU
+		{651AA595-219E-48F3-8D2C-1003FB073240}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
