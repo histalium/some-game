@@ -120,6 +120,18 @@ namespace SomeGame.Server
                         var deckName = line.Substring("create deck ".Length);
                         deckLogic.CreateDeck(name, deckName);
                     }
+                    else if (line.Equals("show decks", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var decks = _decks
+                            .Where(t => t.Player == name)
+                            .ToList();
+
+                        foreach (var deck in decks)
+                        {
+                            writer.WriteLine(deck.Name);
+                        }
+                        writer.Flush();
+                    }
                     else
                     {
                         writer.WriteLine("invalid command");
